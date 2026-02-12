@@ -36,11 +36,17 @@ export class RequestsService {
   }
 
   findByOwner(ownerId: number) {
-    return this.requestRepo.find({ where: { owner: { id: ownerId }  } });
+    return this.requestRepo.find({ 
+      where: { owner: { id: ownerId }  },
+      relations: ['sitter'] 
+    });
   }
 
   findBySitter(sitterId: number) {
-    return this.requestRepo.find({ where: { sitter: { id: sitterId } } });
+    return this.requestRepo.find({
+      where: { sitter: { id: sitterId } },
+      relations: ['owner']
+      });
   }
   async acceptRequest(id: number) {
   const request = await this.requestRepo.findOne({

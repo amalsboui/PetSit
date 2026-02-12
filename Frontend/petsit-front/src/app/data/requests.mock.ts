@@ -1,17 +1,24 @@
 export interface Request {
   id: number;
   ownerId: number;
-  ownerName: string;
   sitterId?: number;      
-  sitterName?: string;  
   animalType: string;
   petName?: string;   
   startDate: string;
   endDate: string;
   description: string;
   status: 'pending' | 'accepted' | 'refused';
-}
+  sitter: {          
+    firstname: string;
+    lastname: string;
+  };
+  owner: {          
+    firstname: string;
+    lastname: string;
+  };
 
+}
+/*
 export const REQUESTS: Request[] = [
   {
     id: 1,
@@ -78,4 +85,4 @@ export const REQUESTS: Request[] = [
     description: 'Shy cat, prefers quiet environment.',
     status: 'pending',
   }
-];
+];*/
