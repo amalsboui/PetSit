@@ -12,7 +12,7 @@ interface LelloResponse {
 
 export class LelloChatService {
   private http = inject(HttpClient);
-  private API_URL = 'http://localhost:3000/lello-chat';
+  private API_URL = 'http://localhost:3000/lellochat';
 
   sendMessage(message: string): Observable<LelloResponse> {
     return this.http.post<LelloResponse>(this.API_URL, { message });

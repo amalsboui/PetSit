@@ -15,14 +15,22 @@ Be cheerful and concise.
 `;
 
   constructor(private configService: ConfigService) {
+
+    const githubToken = this.configService.get<string>('GITHUB_TOKEN');
+    
+    if (!githubToken) {
+      console.error(' GITHUB_TOKEN is missing! Add it to your .env file');
+    }
+
     this.openai = new OpenAI({
-      apiKey: this.configService.get<string>('OPENAI_API_KEY'),
+      baseURL: 'https://models.github.ai/inference', 
+      apiKey: githubToken,
     });
   }
 
   async getReply(userMessage: string): Promise<string> {
     const completion = await this.openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'openai/gpt-4o',
       messages: [
         { role: 'system', content: this.SYSTEM_PROMPT },
         { role: 'user', content: userMessage },

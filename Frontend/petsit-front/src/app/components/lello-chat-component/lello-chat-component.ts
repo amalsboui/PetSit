@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { LelloChatService } from '../../services/lello-chat-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -21,6 +21,7 @@ export class LelloChatComponent {
   loading: boolean = false;
   
   private chatService = inject(LelloChatService);
+  private cdr = inject(ChangeDetectorRef); //
 
   getCurrentTime(): string {
     const now = new Date();
@@ -35,16 +36,24 @@ export class LelloChatComponent {
     if (!this.input.trim()) return;
 
     this.chat.push({ sender: 'You', text: this.input });
+
+    this.chat.push({ sender: 'Lello', text: '...' });
+
     this.loading = true;
 
     this.chatService.sendMessage(this.input).subscribe({
       next: (res) => {
-        this.chat.push({ sender: 'Lello', text: res.reply });
+        this.chat[this.chat.length - 1] = { sender: 'Lello', text: res.reply };
+        this.cdr.detectChanges();
         this.loading = false;
       },
       error: () => {
-        this.chat.push({ sender: 'Lello', text: 'Oops! Something went wrong.' });
-        this.loading = false;
+        this.chat[this.chat.length - 1] = { 
+        sender: 'Lello', 
+        text: 'Oops! Something went wrong.' 
+      };
+      this.cdr.detectChanges();
+      this.loading = false;
       },
     });
 

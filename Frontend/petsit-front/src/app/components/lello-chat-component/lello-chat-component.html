@@ -16,27 +16,20 @@
               <span class="message-time">{{ getCurrentTime() }}</span>
             </div>
             <div class="message-text">
-              {{ msg.text }}
+              @if (msg.text === '...' && msg.sender === 'Lello') {
+                <div class="typing-animation">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              } @else {
+                {{ msg.text }}
+              }
             </div>
           </div>
         </div>
       }
 
-      @if (loading) {
-        <div class="typing-indicator">
-          <div class="message-bubble typing-bubble">
-            <div class="message-sender">
-              <i class="bi bi-robot"></i>
-              <strong>Lello</strong>
-            </div>
-            <div class="typing-animation">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-        </div>
-      }
     </div>
   </div>
 
