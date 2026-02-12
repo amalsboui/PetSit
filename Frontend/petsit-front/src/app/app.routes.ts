@@ -9,12 +9,14 @@ import { NewBookingComponent } from './components/bookings/new-booking-component
 import { SitterDashboardComponent } from './components/sitter-dashboard-component/sitter-dashboard-component';
 import { OwnerDashboardComponent } from './components/owner-dashboard-component/owner-dashboard-component';
 import { AdminDashboardComponent } from './components/admin-dashboard-component/admin-dashboard-component';
+import { LelloChatComponent } from './components/lello-chat-component/lello-chat-component';
 import { roleGuard } from './role-guard';
 import { authGuard } from './guards/auth.guard';
 
 
 export const routes: Routes = [
-    {   path: '', 
+    {   
+        path: '', 
         component: MainLayout,
         children: [
         {path:'', component: HomeComponent},
@@ -23,6 +25,7 @@ export const routes: Routes = [
         {path: 'sitter', canActivate: [authGuard, roleGuard(['sitter'])], component: SitterDashboardComponent},
         {path: 'owner', canActivate: [authGuard, roleGuard(['owner'])], component:OwnerDashboardComponent},
         {path: 'admin', canActivate: [authGuard, roleGuard(['admin'])], component: AdminDashboardComponent },
+        {path: 'lellochat',canActivate: [authGuard], component: LelloChatComponent },
 
         ]
     },

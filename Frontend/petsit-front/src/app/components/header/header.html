@@ -16,7 +16,9 @@
           <a class="nav-link" [routerLink]="['/register']" routerLinkActive="active">Register</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/login']" routerLinkActive="active">Login</a>
+          <a class="nav-link" [routerLink]="['/login']" routerLinkActive="active">
+            <i class="fas fa-sign-in-alt me-1"></i> Login
+          </a>
         </li>
       }
         @if ((role==="owner") && isLoggedIn){
@@ -30,7 +32,12 @@
             routerLinkActive="active">Dashboard</a>
         </li> 
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/logout']" routerLinkActive="active" (click)="logout()">Logout</a>
+          <a class="nav-link" [routerLink]="['/lellochat']" routerLinkActive="active">ChatBot</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/logout']" routerLinkActive="active" (click)="logout()">
+            <i class="fas fa-sign-out-alt me-1"></i>Logout
+          </a>
         </li>
       }
       </ul>

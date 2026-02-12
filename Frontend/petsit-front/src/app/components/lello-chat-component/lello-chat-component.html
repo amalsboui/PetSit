@@ -1,0 +1,64 @@
+<div class="chat-dashboard">
+  <div class="chat-header text-center">
+    <i class="bi bi-chat-dots-fill chat-icon"></i>
+    <h1 class="display-6">PetSit Assistant</h1>
+    <p class="lead">Ask me anything about pet sitting!</p>
+  </div>
+
+  <div class="chat-messages-container">
+    <div class="messages">
+      @for (msg of chat; track $index) {
+        <div class="message-wrapper" [ngClass]="msg.sender.toLowerCase()">
+          <div class="message-bubble">
+            <div class="message-sender">
+              <i class="bi" [ngClass]="msg.sender === 'You' ? 'bi-person-circle' : 'bi-robot'"></i>
+              <strong>{{ msg.sender }}</strong>
+              <span class="message-time">{{ getCurrentTime() }}</span>
+            </div>
+            <div class="message-text">
+              {{ msg.text }}
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (loading) {
+        <div class="typing-indicator">
+          <div class="message-bubble typing-bubble">
+            <div class="message-sender">
+              <i class="bi bi-robot"></i>
+              <strong>Lello</strong>
+            </div>
+            <div class="typing-animation">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="chat-input-container">
+    <div class="input-wrapper">
+      <input
+        [(ngModel)]="input"
+        (keyup.enter)="send()"
+        placeholder="Type your message here..."
+        class="chat-input"
+      />
+      <button 
+        (click)="send()" 
+        [disabled]="!input?.trim()"
+        class="send-button">
+        <i class="bi bi-send-fill me-2"></i>
+        Send
+      </button>
+    </div>
+    <small class="text-muted ms-2">
+      <i class="bi bi-info-circle"></i>
+      Press Enter to send
+    </small>
+  </div>
+</div>

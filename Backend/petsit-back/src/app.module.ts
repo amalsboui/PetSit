@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { RequestsModule } from './requests/requests.module';
 import { Request } from './requests/entities/request.entity';
 import { AdminModule } from './admin/admin.module';
+import { LellochatModule } from './lellochat/lellochat.module';
 
 @Module({
   imports: [
@@ -27,13 +28,14 @@ import { AdminModule } from './admin/admin.module';
         database: configService.get<string>('DB_NAME'),
         entities: [User, Request],
         autoLoadEntities: true, 
-        synchronize: true, 
+        synchronize: true, //only in dev
       }),
     }),
     UsersModule,
     AuthModule,
     RequestsModule,
     AdminModule,
+    LellochatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
