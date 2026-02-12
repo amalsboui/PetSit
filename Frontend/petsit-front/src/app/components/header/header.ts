@@ -23,10 +23,20 @@ export class Header {
   private authService = inject(Auth);
   private router = inject(Router);
   logout() {
-    this.authService.logout().subscribe(() => {
+    this.authService.logout().subscribe({
+      next: () => {
+      // API call succeeded
       localStorage.removeItem('token');
       localStorage.removeItem('role');
       this.router.navigate(['/']);
+    },
+    error: (error) => {
+      // API call failed (expired token, network error, etc.)
+      console.error('Logout API failed, performing local logout anyway:', error);
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      this.router.navigate(['/']);
+    }
     });
   }
 

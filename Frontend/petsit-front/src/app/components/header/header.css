@@ -8,7 +8,9 @@
   transition: all 0.3s ease;  /* Smooth transitions */
   position: relative;
 }
-
+.nav-link {
+  cursor: pointer;
+}
 /* Hover effect for non-active links */
 .navbar-nav .nav-link:not(.active):hover {
   background-color: rgba(255, 192, 203, 0.2);  /* Light pink background */

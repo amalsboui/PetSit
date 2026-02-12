@@ -11,20 +11,17 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/sitters']" routerLinkActive="active">Sitters</a>
+        </li>
         @if (!isLoggedIn){
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/register']" routerLinkActive="active">Register</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/login']" routerLinkActive="active">
-            <i class="fas fa-sign-in-alt me-1"></i> Login
-          </a>
+          <a class="nav-link" [routerLink]="['/login']" routerLinkActive="active">Login</a>
         </li>
       }
-        @if ((role==="owner") && isLoggedIn){
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/sitters']" routerLinkActive="active">Sitters</a>
-        </li>}
         @if (isLoggedIn){
         <li class="nav-item">
           <a class="nav-link"
@@ -35,8 +32,8 @@
           <a class="nav-link" [routerLink]="['/lellochat']" routerLinkActive="active">ChatBot</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/logout']" routerLinkActive="active" (click)="logout()">
-            <i class="fas fa-sign-out-alt me-1"></i>Logout
+          <a class="nav-link" (click)="logout()">
+            Logout <i class="fas fa-sign-out-alt me-1"></i>
           </a>
         </li>
       }
