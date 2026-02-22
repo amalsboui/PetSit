@@ -4,7 +4,7 @@ A full-stack pet-sitting management platform built with **NestJS** and **Angular
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -16,20 +16,20 @@ A full-stack pet-sitting management platform built with **NestJS** and **Angular
 
 ---
 
-## ✨ Features
+## Features
 
-### 🔐 Authentication
+### Authentication
 - Register & login with JWT-based sessions
 - Password hashing with bcrypt
 - Role-based guards and custom decorators
 
-### 👥 Roles
+### Roles
 
 **Admin** — Manage users and assign roles  
 **Owner** — Create and manage pet-sitting requests  
 **Sitter** — Browse available requests and accept assignments
 
-### 🐶 Pet-Sitting Requests
+### Pet-Sitting Requests
 - Create, view, and update requests
 - Accept assignments as a sitter
 - Role-filtered result sets
@@ -55,7 +55,7 @@ Key:     Stored securely in backend .env
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 ```
 POST   /auth/register
@@ -74,7 +74,7 @@ POST   /chat            → Returns Lello's AI response
 
 ---
 
-## 🛠 Setup
+## Setup
 
 ### Backend
 
@@ -110,7 +110,7 @@ ng serve --open
 
 ---
 
-## 🔒 Security
+## Security
 
 - Passwords hashed with bcrypt
 - JWT authentication on all protected routes
