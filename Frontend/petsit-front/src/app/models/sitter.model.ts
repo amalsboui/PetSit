@@ -5,3 +5,4 @@ export interface Sitter {
   description: string;
   availability: string; 
 }
+

@@ -1,0 +1,75 @@
+.notification-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 1050;
+  max-width: 350px;
+}
+
+.toast-notification {
+  background: white;
+  border-left: 4px solid #0d6efd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  animation: slideIn 0.3s ease;
+  transition: transform 0.2s;
+}
+
+.toast-notification:hover {
+  transform: translateX(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.toast-notification.newRequest {
+  border-left-color: #0d6efd; /* Bleu */
+}
+
+.toast-notification.requestAccepted {
+  border-left-color: #198754; /* Vert */
+}
+
+.toast-notification.requestRefused {
+  border-left-color: #dc3545; /* Rouge */
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+}
+
+.btn-close {
+  opacity: 0.5;
+  font-size: 0.8rem;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.toast-notification.removing {
+  animation: fadeOut 0.3s ease forwards;
+}

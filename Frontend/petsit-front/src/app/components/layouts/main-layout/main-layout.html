@@ -1,5 +1,27 @@
 <div class="d-flex flex-column min-vh-100">
   <app-header></app-header>
+
+  <!-- Notifications Toast -->
+  <div class="notification-container">
+    <div *ngFor="let notif of notifications" 
+         class="toast-notification" 
+         [ngClass]="notif.type"
+         (click)="markAsRead(notif)">
+      <div class="d-flex align-items-start">
+        <div class="notification-icon me-2">
+          <span *ngIf="notif.type === 'newRequest'">🐾</span>
+          <span *ngIf="notif.type === 'requestAccepted'">✅</span>
+          <span *ngIf="notif.type === 'requestRefused'">❌</span>
+        </div>
+        <div class="notification-content flex-grow-1">
+          <strong>{{ notif.title }}</strong>
+          <p class="mb-0">{{ notif.message }}</p>
+          <small class="text-muted">{{ notif.time | date:'HH:mm' }}</small>
+        </div>
+        <button class="btn-close btn-sm" (click)="closeNotification($event, notif)"></button>
+      </div>
+    </div>
+  </div>
   
   <div class="container mt-4 flex-grow-1">
     <router-outlet></router-outlet>

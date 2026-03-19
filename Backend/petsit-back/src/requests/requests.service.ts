@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { Request } from './entities/request.entity';
 import { User } from 'src/users/entities/user.entity';
 import { RequestStatus } from 'src/Enums/requests.enum';
+import { NotificationsGateway } from 'src/notifications/notifications.gateway';
 
 
 @Injectable()
@@ -16,11 +17,18 @@ export class RequestsService {
 
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+
+    private readonly notificationsGateway: NotificationsGateway,
   ) {}
 
   async create(createDto: CreateRequestDto, ownerId: number) {
     const owner = await this.userRepo.findOneBy({ id: ownerId });
+    if (!owner) {
+      throw new NotFoundException(`Owner not found`);
+  }
+    if (!createDto.sitterId) throw new NotFoundException(`Sitter ID is required`);
     const sitter = await this.userRepo.findOneBy({ id: createDto.sitterId });
+    if (!sitter) throw new NotFoundException(`Sitter not found`);
 
     const request = this.requestRepo.create({
       animalType: createDto.animalType,
@@ -32,7 +40,17 @@ export class RequestsService {
       sitter,
     } as Request);
     
-    return this.requestRepo.save(request);
+    const savedRequest = await this.requestRepo.save(request);
+
+    //websocket logic
+     // Notify the sitter that a new request has been made
+    this.notificationsGateway.sendToUser(sitter.id.toString(), 'newRequest', {
+      requestId: savedRequest.id,
+      petName: savedRequest.petName,
+      ownerId: owner.id,
+    });
+
+    return savedRequest;
   }
 
   findByOwner(ownerId: number) {
@@ -48,18 +66,28 @@ export class RequestsService {
       relations: ['owner']
       });
   }
-  async acceptRequest(id: number) {
+  // Accept a request and notify the owner 
+  async acceptRequest(requestId: number) {
   const request = await this.requestRepo.findOne({
-    where: { id },
+    where: { id: requestId },
+    relations: ['owner', 'sitter'],
   });
 
   if (!request) {
-    throw new NotFoundException(`Request with id ${id} not found`);
+    throw new NotFoundException(`Request not found`);
   }
 
   request.status = RequestStatus.ACCEPTED;
 
-  return await this.requestRepo.save(request);
+  const savedRequest = await this.requestRepo.save(request);
+
+    // Notify the owner that the sitter accepted
+    this.notificationsGateway.sendToUser(request.owner.id.toString(), 'requestAccepted', {
+      requestId: savedRequest.id,
+      sitterId: request.sitter.id,
+    });
+
+    return savedRequest;
 }
 
   async refuseRequest(id: number) {
@@ -75,24 +103,5 @@ export class RequestsService {
 
   return await this.requestRepo.save(request);
 }
-  /*//cli generated crud entry points, could be helpful
-  create(createRequestDto: CreateRequestDto) {
-    return 'This action adds a new request';
-  }
-
-  findAll() {
-    return `This action returns all requests`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} request`;
-  }
-
-  update(id: number, updateRequestDto: UpdateRequestDto) {
-    return `This action updates a #${id} request`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} request`;
-  }*/
+  
 }

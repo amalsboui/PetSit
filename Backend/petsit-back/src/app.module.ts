@@ -10,6 +10,8 @@ import { RequestsModule } from './requests/requests.module';
 import { Request } from './requests/entities/request.entity';
 import { AdminModule } from './admin/admin.module';
 import { LellochatModule } from './lellochat/lellochat.module';
+import { NotificationsGateway } from './notifications/notifications.gateway';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -36,8 +38,9 @@ import { LellochatModule } from './lellochat/lellochat.module';
     RequestsModule,
     AdminModule,
     LellochatModule,
+    NotificationsModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, NotificationsGateway],
 })
 export class AppModule {}
