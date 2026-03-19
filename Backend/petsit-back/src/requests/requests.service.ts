@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRequestDto } from './dto/create-request.dto';
-import { UpdateRequestDto } from './dto/update-request.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from './entities/request.entity';
@@ -93,15 +92,24 @@ export class RequestsService {
   async refuseRequest(id: number) {
   const request = await this.requestRepo.findOne({
     where: { id },
+    relations: ['owner', 'sitter']
   });
 
   if (!request) {
-    throw new NotFoundException(`Request with id ${id} not found`);
+    throw new NotFoundException(`Request not found`);
   }
 
   request.status = RequestStatus.REFUSED;
 
-  return await this.requestRepo.save(request);
+  const savedRequest = await this.requestRepo.save(request);
+
+    // Notify the owner that the sitter refused
+    this.notificationsGateway.sendToUser(request.owner.id.toString(), 'requestRefused', {
+      requestId: savedRequest.id,
+      sitterId: request.sitter.id,
+    });
+
+    return savedRequest;
 }
   
 }

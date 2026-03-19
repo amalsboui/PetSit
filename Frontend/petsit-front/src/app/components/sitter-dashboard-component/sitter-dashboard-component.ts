@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { RequestsService } from '../../services/requests-service';
 import { RouterLink } from '@angular/router';
 import type { Request } from '../../data/requests.mock';
-import { Observable } from 'rxjs';
+import { Observable, startWith, Subject, switchMap } from 'rxjs';
 
 
 @Component({
@@ -14,17 +14,22 @@ import { Observable } from 'rxjs';
 })
 export class SitterDashboardComponent {
   private requestsService = inject(RequestsService);
-  sitterRequests$ : Observable<Request[]> = this.requestsService.getSitterRequests(); 
+  private refresh$ = new Subject<void>();
 
+  sitterRequests$: Observable<Request[]> = this.refresh$.pipe(
+    startWith(undefined),
+    switchMap(() => this.requestsService.getSitterRequests())
+  );
+  
   acceptRequest(id: number) {
     this.requestsService.acceptRequest(id).subscribe(() => {
-      this.sitterRequests$ = this.requestsService.getSitterRequests();
+      this.refresh$.next();
     });
   }
 
   refuseRequest(id: number) {
     this.requestsService.refuseRequest(id).subscribe(() => {
-      this.sitterRequests$ = this.requestsService.getSitterRequests();
+      this.refresh$.next();
     });
   }
   // sitterRequests: Request[] = [];

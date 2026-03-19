@@ -16,6 +16,7 @@ export class Auth {
       localStorage.setItem('token', response.token);
       const payload = JSON.parse(atob(response.token.split('.')[1]));
       localStorage.setItem('role', payload.role);
+      localStorage.setItem('userId', payload.sub.toString());
     })
   );
   }

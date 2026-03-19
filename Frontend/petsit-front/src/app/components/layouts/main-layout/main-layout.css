@@ -8,7 +8,7 @@
 
 .toast-notification {
   background: white;
-  border-left: 4px solid #0d6efd;
+  border-left: 4px solid #dee4b9;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   margin-bottom: 10px;
@@ -24,7 +24,7 @@
 }
 
 .toast-notification.newRequest {
-  border-left-color: #0d6efd; /* Bleu */
+  border-left-color: #dee4b9; /* Bleu */
 }
 
 .toast-notification.requestAccepted {

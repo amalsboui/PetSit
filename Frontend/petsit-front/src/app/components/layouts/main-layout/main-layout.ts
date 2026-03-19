@@ -19,9 +19,10 @@ export class MainLayout implements OnInit, OnDestroy {
   constructor(
     private socketService: SocketService,
     private router: Router
-  ) {}
+  ) {
+  }
 
-  ngOnInit() {
+  ngOnInit() {    
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
 
@@ -42,7 +43,7 @@ export class MainLayout implements OnInit, OnDestroy {
       this.socketService.on('requestAccepted').subscribe((data) => {
         this.addNotification({
           type: 'requestAccepted',
-          title: '✅ Demande acceptée',
+          title: 'Demande acceptée',
           message: 'Ta demande de garde a été acceptée !',
           data: data
         });
@@ -52,12 +53,17 @@ export class MainLayout implements OnInit, OnDestroy {
       this.socketService.on('requestRefused').subscribe((data) => {
         this.addNotification({
           type: 'requestRefused',
-          title: '❌ Demande refusée',
+          title: 'Demande refusée',
           message: 'Ta demande de garde a été refusée',
           data: data
         });
       });
+
+    } else {
+      console.log('❌ User not logged in, skipping WebSocket connection');
     }
+    
+    console.log('🏁 MainLayout ngOnInit finished');
   }
 
   addNotification(notif: Omit<Notification, 'id' | 'time' | 'removing'>) {
@@ -71,6 +77,8 @@ export class MainLayout implements OnInit, OnDestroy {
     
     this.notifications.unshift(newNotif);
     
+    console.log('📋 Updated notifications count:', this.notifications.length);
+    
     // Auto-supprimer après 5 secondes
     const timeout = setTimeout(() => {
       this.removeNotification(id);
@@ -79,13 +87,21 @@ export class MainLayout implements OnInit, OnDestroy {
     this.notificationTimeouts.set(id, timeout);
   }
 
-  markAsRead(notification: Notification) {
-    // Si tu veux naviguer vers la demande concernée
-    if (notification.data?.requestId) {
-      this.router.navigate(['/request', notification.data.requestId]);
+  markAsRead(notification: Notification) {    
+  if (notification.data?.requestId) {
+    const role = localStorage.getItem('role');
+    
+    if (role === 'sitter') {
+      this.router.navigate(['/sitter', notification.data.requestId]);
+    } else if (role === 'owner') {
+      this.router.navigate(['/owner', notification.data.requestId]);
+    } else {
+      // Fallback
+      this.router.navigate(['/', notification.data.requestId]);
     }
-    this.removeNotification(notification.id);
   }
+  this.removeNotification(notification.id);
+}
 
   closeNotification(event: Event, notification: Notification) {
     event.stopPropagation();
@@ -108,6 +124,8 @@ export class MainLayout implements OnInit, OnDestroy {
       setTimeout(() => {
         this.notifications = this.notifications.filter(n => n.id !== id);
       }, 300);
+    } else {
+      console.log('⚠️ Notification not found for removal:', id);
     }
   }
 
