@@ -1,6 +1,6 @@
 # 🐾 PetSit
 
-A full-stack pet-sitting management platform built with **NestJS** and **Angular**, featuring role-based access control and an AI-powered pet assistant named **Lello**.
+A full-stack pet-sitting management platform built with **NestJS** and **Angular**, featuring role-based access control, real-time notifications, and an AI-powered pet assistant named **Lello**.
 
 ---
 
@@ -13,6 +13,7 @@ A full-stack pet-sitting management platform built with **NestJS** and **Angular
 | Database | PostgreSQL + TypeORM |
 | Auth | JWT + bcrypt |
 | AI | GitHub Models (GPT-4o via OpenAI SDK) |
+| Real-time | WebSockets (Socket.IO) |
 
 ---
 
@@ -31,8 +32,13 @@ A full-stack pet-sitting management platform built with **NestJS** and **Angular
 
 ### Pet-Sitting Requests
 - Create, view, and update requests
-- Accept assignments as a sitter
+- Accept/refuse assignments as a sitter
 - Role-filtered result sets
+
+### 🔔 Real-Time Notifications (WebSockets)
+- **Sitters** get instant notifications when a new request is created
+- **Owners** get instant notifications when their request is accepted or refused
+- Toast notifications with auto-dismiss 
 
 ---
 
@@ -44,8 +50,6 @@ Lello is a friendly, built-in pet-care assistant powered by GPT-4o.
 - Gives short, practical pet-care tips
 - Stays cheerful and concise
 - Recommends a vet for any health concerns — never diagnoses
-
-**How it works:** The Angular frontend sends a message → the NestJS backend calls the GitHub Models inference API → the response comes back to the chat UI. The API key never touches the frontend.
 
 ```
 Model:   openai/gpt-4o
